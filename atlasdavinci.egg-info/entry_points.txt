@@ -1,0 +1,2 @@
+[console_scripts]
+atlasdavinci = atlasdavinci.run:main

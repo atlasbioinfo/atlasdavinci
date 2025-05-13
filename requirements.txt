@@ -1,3 +1,11 @@
 numpy>=1.19.0
 pandas>=1.0.0
-pysam>=0.16.0 
+pysam>=0.16.0
+# Standard library dependencies are included in Python installation
+# logging
+# datetime
+# subprocess
+# random
+# string
+# os
+# sys 

@@ -1,3 +1,32 @@
+Metadata-Version: 2.4
+Name: atlasdavinci
+Version: 0.1.0
+Summary: A tool for processing Nanopore sequencing BAM files with Davinci algorithm
+Home-page: https://github.com/atlasbioinfo/atlasdavinci
+Author: Atlas Bioinformatics
+Author-email: atlas.bioinfo@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Development Status :: 4 - Beta
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.19.0
+Requires-Dist: pandas>=1.0.0
+Requires-Dist: pysam>=0.16.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
 # atlas Davinci
 
 This script is a simplified version of Davinci algorithm from the paper published in Nature (DOI: 10.1038/s41586-022-05135-9). It supports direct mutation calling using Davinci algorithm from Nanopore sequencing BAM files after alignment.
