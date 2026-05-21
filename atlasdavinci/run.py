@@ -1,12 +1,13 @@
 import sys,pysam
 from atlasdavinci.utils import (
-    check_bam_file, 
+    check_bam_file,
     check_bam_tags,
     check_and_create_bam_index,
     count_bam_reads,
     fix_bam_tags_DF_DC,
     batch_fold_structures,
-    merge_fold_files
+    merge_fold_files,
+    forgi_vectorize_and_cluster
 )
 import random,string,logging,os
 import numpy as np
@@ -64,6 +65,19 @@ def main():
     parser.add_argument('-v', '--verbose',
                       help='Increase output verbosity',
                       action='store_true')
+    parser.add_argument('-r', '--reference',
+                      help='Reference FASTA file (required for Nanopore BAMs without MD tags)',
+                      default=None)
+    parser.add_argument('--no-ga-filter',
+                      help='Disable G->A artifact filtering (enabled by default)',
+                      action='store_true')
+    parser.add_argument('--clusters', type=int, default=3,
+                      help='Number of K-means clusters for forgi vectorization (default: 3)')
+    parser.add_argument('--gamma', type=float, default=6,
+                      help='CONTRAfold gamma parameter (default: 6)')
+    parser.add_argument('--no-cluster',
+                      help='Skip forgi vectorization and clustering step',
+                      action='store_true')
     args = parser.parse_args()
     
     # Set up logging
@@ -97,7 +111,8 @@ def main():
         logging.info("\nTags are missing, running fix_bam_tags_DF_DC...")
         random_str = ''.join(random.choices(string.ascii_letters, k=6))
         output_bam = bamfile.replace('.bam', f'{random_str}.bam')
-        fix_bam_tags_DF_DC(bamfile, output_bam)
+        filter_ga = not args.no_ga_filter
+        fix_bam_tags_DF_DC(bamfile, output_bam, filter_ga=filter_ga, reference=args.reference)
         os.replace(output_bam, bamfile)
         check_and_create_bam_index(bamfile)
     
@@ -118,8 +133,21 @@ def main():
     if args.output:
         os.rename(output_bam, args.output)
         output_bam = args.output
-        
+
     logging.info(f"Successfully created BAM file with folding information: {output_bam}")
+
+    # Run forgi vectorization and clustering
+    if not args.no_cluster:
+        cluster_dir = output_bam.replace('.bam', '_clusters')
+        logging.info(f"Running forgi vectorization and clustering (gamma={args.gamma}, clusters={args.clusters})...")
+        cluster_result = forgi_vectorize_and_cluster(
+            output_bam, cluster_dir,
+            gamma=args.gamma, num_clusters=args.clusters
+        )
+        if cluster_result:
+            logging.info(f"Clustering results saved to: {cluster_dir}")
+        else:
+            logging.warning("Forgi vectorization/clustering produced no results")
 
 if __name__ == "__main__":
     main() 

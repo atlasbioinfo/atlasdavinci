@@ -7,7 +7,9 @@ setup(
     install_requires=[
         "numpy>=1.19.0",
         "pandas>=1.0.0",
-        "pysam>=0.16.0"
+        "pysam>=0.16.0",
+        "scikit-learn>=0.24.0",
+        "matplotlib>=3.3.0"
     ],
     entry_points={
         'console_scripts': [

@@ -4,7 +4,7 @@ Utility functions for BAM file processing and RNA structure folding.
 
 from .checkbam import check_bam_file, check_bam_tags, check_and_create_bam_index
 from .statsbam import count_bam_reads
-from .bamprocess import fix_bam_tags_DF_DC, batch_fold_structures, merge_fold_files
+from .bamprocess import read_fasta, fix_bam_tags_DF_DC, batch_fold_structures, merge_fold_files, forgi_vectorize_and_cluster
 
 __all__ = [
     'check_bam_file',
@@ -13,5 +13,6 @@ __all__ = [
     'count_bam_reads',
     'fix_bam_tags_DF_DC',
     'batch_fold_structures',
-    'merge_fold_files'
+    'merge_fold_files',
+    'forgi_vectorize_and_cluster'
 ] 
